@@ -22,11 +22,10 @@ def fazerCadastro(clientes: list[dict[str, str]]):
 def entrarNaConta(clientes: list[dict[str, str]]):
     user = None
     while user is None:
-        user = input("Digite o seu e-mail: ")
+        email = input("Digite o seu e-mail: ")
         password = input("Digite a sua senha: ")
-        print(user, password)
         for cliente in clientes:
-            if cliente['email'] == user and cliente['senha'] == password:
+            if cliente['email'] == email and cliente['senha'] == password:
                 user = cliente
                 break
         if user is not None:
