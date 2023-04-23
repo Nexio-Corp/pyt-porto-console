@@ -43,7 +43,10 @@ def main():
             print("Opção inválida. Tente novamente.")
     while True:
         escolhaMenu = int(input(
-            "Bem-vindo(a) ao menu de funcionalidades:\n1 - Fazer vistoria\n2 - Visualizar Dados\n3 - Sair\n"))
+            "Bem-vindo(a) ao menu de funcionalidades:\n1 - Fazer vistoria"
+            "\n2 - Visualizar Dados"
+            # TODO Adicionar relatório de vistoria
+            "\n9 - Sair\n"))
         if escolhaMenu == 1:
             user['bikes'].append(vistoria(user))
         elif escolhaMenu == 2:
