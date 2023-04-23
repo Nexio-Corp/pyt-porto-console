@@ -1,14 +1,11 @@
 def vistoria(user: dict[str, str]):
-    print(
-        "Para darmos início na vistoria, precisaremos de alguns dados da sua bike:")
+    print("Para darmos início na vistoria, precisaremos de alguns dados da sua bike:")
     modeloBike = input("Digite o modelo da sua bike: ")
     valorBike = float(input("Digite o valor da sua bike: "))
-    modificacoesBike = input(
-        "Digite as modificações feitas na bike: ")
+    modificacoesBike = input("Digite as modificações feitas na bike: ")
     numeroDoChassi = int(input("Digite o número do chassi: "))
 
-    print(
-        "Dados enviados! Para o seguinte passo, é necessário estar com a sua bike do seu lado.")
+    print("Dados enviados! Para o seguinte passo, é necessário estar com a sua bike do seu lado.")
     print("Agora precisaremos de 6 fotos da sua bike:")
 
     i = 0
