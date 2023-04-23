@@ -1,5 +1,6 @@
-from user import fazerCadastro, entrarNaConta
 from bike import vistoria
+from user import entrarNaConta, fazerCadastro
+
 clientes = [
     {
         'nome': 'cliente1',
@@ -26,27 +27,31 @@ def main():
     user = None
     while user is None:
         escolhaLogin = int(
-            input("""Bem-Vindo(a) á Porto Seguro. Escolha uma opção a baixo:
-                    \n1 - Entrar na sua conta
-                    \n2 - Fazer cadastro
-                    \n3 - Sair\n"""))
+            input("Bem-Vindo(a) á Porto Seguro. Escolha uma opção a baixo:"
+                  "\n1 - Entrar na sua conta"
+                  "\n2 - Fazer cadastro"
+                  "\n3 - Sair\n"
+                  ))
         if escolhaLogin == 1:
             user = entrarNaConta(clientes)
         elif escolhaLogin == 2:
             user = fazerCadastro(clientes)
         elif escolhaLogin == 3:
             print("Obrigado. Volte logo.")
-            break
+            return
         else:
             print("Opção inválida. Tente novamente.")
     while True:
         escolhaMenu = int(input(
-            "Bem-vindo(a) ao menu de funcionalidades:\n1 - Fazer vistoria\n2 - Sair\n"))
+            "Bem-vindo(a) ao menu de funcionalidades:\n1 - Fazer vistoria\n2 - Visualizar Dados\n3 - Sair\n"))
         if escolhaMenu == 1:
-            vistoria()
+            user['bikes'].append(vistoria(user))
         elif escolhaMenu == 2:
+            # TODO Melhorar a visualização dos dados
+            print(user)
+        elif escolhaMenu == 3:
             print("Sessão encerrada")
-            exit()
+            return
         else:
             print("Opção inválida. Tente novamente.")
 
