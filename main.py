@@ -4,7 +4,7 @@ from types_db import ICliente
 # ICliente = dict[str, (str | list[dict[str, str]])]
 
 
-clientes: list[ICliente] = [
+clientes: list[ICliente] = [  # Mock de clientes
     {
         'nome': 'cliente1',
         'email': 'cliente1@gmail.com',
