@@ -48,6 +48,7 @@ def main():
         escolhaMenu = int(input(
             "Bem-vindo(a) ao menu de funcionalidades:\n1 - Fazer vistoria"
             "\n2 - Visualizar Dados"
+            "\n3 - Visualizar Bikes"
             # TODO Adicionar relatório de vistoria
             "\n9 - Sair\n"))
         if escolhaMenu == 1:
@@ -55,8 +56,19 @@ def main():
             if bike is not None:
                 user['bikes'].append(bike)
         elif escolhaMenu == 2:
-            # TODO Melhorar a visualização dos dados
-            print(user)
+            # Dados do usuário
+            print(f"{user['nome']} - {user['email']}")
+            print(f"Telefone: {user['telefone']}")
+            print(f"CPF: {user['cpf']}")
+            print(f"CEP: {user['cep']}\n")
+
+        elif escolhaMenu == 3:
+            print("Bikes:")
+            for bike in user['bikes']:
+                print(f"Modelo: {bike['modelo']}")
+                print(f"Valor: {bike['valor']}")
+                print(f"Modificações: {bike['modificacoes']}")
+                print(f"Chassi: {bike['chassi']}\n")
         elif escolhaMenu == 9:
             print("Sessão encerrada")
             return
