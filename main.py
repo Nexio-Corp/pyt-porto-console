@@ -1,8 +1,6 @@
-from bike import vistoria, IBike
+from bike import vistoria
 from user import entrarNaConta, fazerCadastro
 from types_db import ICliente
-# ICliente = dict[str, (str | list[dict[str, str]])]
-
 
 clientes: list[ICliente] = [  # Mock de clientes
     {
@@ -12,7 +10,22 @@ clientes: list[ICliente] = [  # Mock de clientes
         'telefone': '123456789',
         'cpf': '123456789',
         'cep': '123456789',
-        'bikes': []
+        'bikes': [
+            {
+                'modelo': 'modelo1',
+                'valor': 100,
+                'modificacoes': [],
+                'chassi': 1234,
+                'fotos': '111111'
+            },
+            {
+                'modelo': 'modelo2',
+                'valor': 100,
+                'modificacoes': [],
+                'chassi': 1234,
+                'fotos': '111111'
+            }
+        ]
     },
     {
         'nome': 'teste',
@@ -22,6 +35,15 @@ clientes: list[ICliente] = [  # Mock de clientes
         'cpf': '123456789',
         'cep': '123456789',
         'bikes': []
+    },
+    {
+        'nome': 'admin',
+        'email': 'admin@porto.com',
+        'senha': '1234',
+        'telefone': '123456789',
+        'cpf': '123456789',
+        'cep': '123456789',
+        'bikes': [],
     }
 ]
 
@@ -45,10 +67,12 @@ def main():
         else:
             print("Opção inválida. Tente novamente.")
     while True:
+        isAdm = "@porto" in user['email']
         escolhaMenu = int(input(
             "Bem-vindo(a) ao menu de funcionalidades:\n1 - Fazer vistoria"
             "\n2 - Visualizar Dados"
-            "\n3 - Visualizar Bikes"
+            "\n3 - Visualizar Bikes" +
+            ("\n4 - Visualizar relatório de vistoria" if isAdm else "") +
             # TODO Adicionar relatório de vistoria
             "\n9 - Sair\n"))
         if escolhaMenu == 1:
@@ -69,6 +93,21 @@ def main():
                 print(f"Valor: {bike['valor']}")
                 print(f"Modificações: {bike['modificacoes']}")
                 print(f"Chassi: {bike['chassi']}\n")
+        elif escolhaMenu == 4 and isAdm:
+            for cliente in clientes:
+                print(f"Nome: {cliente['nome']}")
+                print(f"E-mail: {cliente['email']}")
+                print(f"Telefone: {cliente['telefone']}")
+                print(f"CPF: {cliente['cpf']}")
+                print(f"CEP: {cliente['cep']}")
+                print("Bikes:")
+                for bike in cliente['bikes']:
+                    print(f"\tModelo: {bike['modelo']}")
+                    print(f"\tValor: {bike['valor']}")
+                    print(f"\tModificações: {bike['modificacoes']}")
+                    print(f"\tChassi: {bike['chassi']}")
+                    print(
+                        f"\tVistoria: {'Aprovada' if bike['fotos'] == '111111' else 'Reprovada'}\n")
         elif escolhaMenu == 9:
             print("Sessão encerrada")
             return
