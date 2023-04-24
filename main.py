@@ -1,7 +1,10 @@
-from bike import vistoria
+from bike import vistoria, IBike
 from user import entrarNaConta, fazerCadastro
+from types_db import ICliente
+# ICliente = dict[str, (str | list[dict[str, str]])]
 
-clientes = [
+
+clientes: list[ICliente] = [
     {
         'nome': 'cliente1',
         'email': 'cliente1@gmail.com',
@@ -48,11 +51,13 @@ def main():
             # TODO Adicionar relatório de vistoria
             "\n9 - Sair\n"))
         if escolhaMenu == 1:
-            user['bikes'].append(vistoria(user))
+            bike = vistoria(user)
+            if bike is not None:
+                user['bikes'].append(bike)
         elif escolhaMenu == 2:
             # TODO Melhorar a visualização dos dados
             print(user)
-        elif escolhaMenu == 3:
+        elif escolhaMenu == 9:
             print("Sessão encerrada")
             return
         else:

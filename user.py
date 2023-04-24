@@ -1,4 +1,7 @@
-def fazerCadastro(clientes: list[dict[str, str]]):
+from types_db import ICliente
+
+
+def fazerCadastro(clientes: list[ICliente]):
     print("Para fazer o cadastro digite:")
     nome = input("Nome: ")
     email = input("E-mail: ")
@@ -6,20 +9,21 @@ def fazerCadastro(clientes: list[dict[str, str]]):
     telefone = input("Telefone para contato: ")
     cpf = input("CPF: ")
     cep = input("Cep: ")
-    usuario = {
+    usuario: ICliente = {
         'nome': nome,
         'email': email,
         'senha': senha,
         'telefone': telefone,
         'cpf': cpf,
-        'cep': cep
+        'cep': cep,
+        'bikes': []
     }
     print("Seu cadastro foi concluído com sucesso!\nVocê será redirecionado para a página inicial.\n.\n.\n.\n.")
     clientes.append(usuario)
     return usuario
 
 
-def entrarNaConta(clientes: list[dict[str, str]]):
+def entrarNaConta(clientes: list[ICliente]):
     user = None
     while user is None:
         email = input("Digite o seu e-mail: ")

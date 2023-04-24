@@ -1,4 +1,8 @@
-def vistoria(user: dict[str, str]):
+from typing import TypedDict
+from types_db import IBike, ICliente
+
+
+def vistoria(user: ICliente):
     print("Para darmos início na vistoria, precisaremos de alguns dados da sua bike:")
     modeloBike = input("Digite o modelo da sua bike: ")
     valorBike = float(input("Digite o valor da sua bike: "))
@@ -28,7 +32,7 @@ def vistoria(user: dict[str, str]):
         if fotos == "111111":  # 111111 é o valor que representa que todas as fotos são autênticas
             print(
                 "Vistoria executada com sucesso! A apólice foi enviada para o seu email.")
-            bike = {
+            bike: IBike = {
                 'modelo': modeloBike,
                 'valor': valorBike,
                 'modificacoes': [mod.strip() for mod in modificacoesBike.split(",")],
