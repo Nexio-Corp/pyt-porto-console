@@ -1,11 +1,7 @@
 from typing import TypedDict
 from types_db import IBike, ICliente
+from funcoes_basicas import forcar_opcao
 
-def forcar_opcao(msg, lista_opcoes):
-    resposta = input(msg)
-    while not resposta in lista_opcoes:
-        resposta = input("Digite um valor válido por favor!")
-    return resposta
 
 def vistoria(user: ICliente):
     print("Para darmos início na vistoria, precisaremos de alguns dados da sua bike:")

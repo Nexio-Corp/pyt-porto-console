@@ -1,62 +1,17 @@
 from bike import vistoria
 from user import entrarNaConta, fazerCadastro
 from types_db import ICliente
+from sim_database import clientes
+from funcoes_basicas import forcar_opcao
 
-clientes: list[ICliente] = [  # Mock de clientes
-    {
-        'nome': 'cliente1',
-        'email': 'cliente1@gmail.com',
-        'senha': '1234',
-        'telefone': '123456789',
-        'cpf': '123456789',
-        'cep': '123456789',
-        'bikes': [
-            {
-                'modelo': 'modelo1',
-                'valor': 100,
-                'modificacoes': [],
-                'chassi': 1234,
-                'fotos': '111111'
-            },
-            {
-                'modelo': 'modelo2',
-                'valor': 100,
-                'modificacoes': [],
-                'chassi': 1234,
-                'fotos': '111111'
-            }
-        ]
-    },
-    {
-        'nome': 'teste',
-        'email': 'teste@email.com',
-        'senha': '1234',
-        'telefone': '123456789',
-        'cpf': '123456789',
-        'cep': '123456789',
-        'bikes': []
-    },
-    {
-        'nome': 'admin',
-        'email': 'admin@porto.com',
-        'senha': '1234',
-        'telefone': '123456789',
-        'cpf': '123456789',
-        'cep': '123456789',
-        'bikes': [],
-    }
-]
+
 
 
 def main():
     user = None
     while user is None:
-        escolhaLogin = int(
-            input("Bem-Vindo(a) á Porto Seguro. Escolha uma opção a baixo:"
-                  "\n1 - Entrar na sua conta"
-                  "\n2 - Fazer cadastro"
-                  "\n3 - Sair\n"
-                  ))
+        escolhaLogin = int(forcar_opcao("alo? ", ["1","2","3"]))
+        print(escolhaLogin)
         if escolhaLogin == 1:
             user = entrarNaConta(clientes)
         elif escolhaLogin == 2:
@@ -69,7 +24,8 @@ def main():
     while True:
         isAdm = "@porto" in user['email']
         escolhaMenu = int(input(
-            "Bem-vindo(a) ao menu de funcionalidades:\n1 - Fazer vistoria"
+            "Bem-vindo(a) ao menu de funcionalidades:"
+            "\n1 - Fazer vistoria"
             "\n2 - Visualizar Dados"
             "\n3 - Visualizar Bikes" +
             ("\n4 - Visualizar relatório de vistoria" if isAdm else "") +
@@ -114,6 +70,6 @@ def main():
         else:
             print("Opção inválida. Tente novamente.")
 
+# if __name__ == "__main__":
 
-if __name__ == "__main__":
-    main()
+main()
