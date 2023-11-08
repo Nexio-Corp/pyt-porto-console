@@ -33,7 +33,7 @@ def entrarNaConta(clientes: list[ICliente]):
                 user = cliente
                 break
         if user is not None:
-            print(f"Olá {user['nome']}, você entrou na sua conta")
+            print(f"Olá {user['nome']}, você entrou na sua conta.")
         else:
-            print("E-mail ou senha incorretos. Tente novamente")
+            print("E-mail ou senha incorretos. Tente novamente.")
     return user
