@@ -1,6 +1,6 @@
 from typing import TypedDict
 from types_db import IBike, ICliente
-from funcoes_basicas import forcar_opcao
+from basic_functions import forcar_opcao
 
 
 def vistoria(user: ICliente):
