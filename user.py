@@ -18,9 +18,8 @@ def fazerCadastro(clientes: list[ICliente]):
         'cep': cep,
         'bikes': []
     }
-    print("Seu cadastro foi concluído com sucesso!\nVocê será redirecionado para a página inicial.\n.\n.\n.\n.")
+    print(f"{usuario['nome']}, seu cadastro foi concluído com sucesso!\nVocê será redirecionado para a página inicial.\n.\n.\n.")
     clientes.append(usuario)
-    return usuario
 
 
 def entrarNaConta(clientes: list[ICliente]):
