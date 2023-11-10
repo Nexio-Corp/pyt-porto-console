@@ -36,3 +36,12 @@ def entrar_na_conta(clientes: list[ICliente]):
         else:
             print("E-mail ou senha incorretos. Tente novamente.")
     return user
+
+
+def exibir_informacoes_usuario(user: ICliente):
+    # Dados do usuário
+    print(f"\n{user['nome']}")
+    print(f"Email: {user['email']}")
+    print(f"Telefone: {user['telefone']}")
+    print(f"CPF: {user['cpf']}")
+    print(f"CEP: {user['cep']}\n")

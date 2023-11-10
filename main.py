@@ -1,12 +1,12 @@
 from bike import vistoria
-from user import entrar_na_conta, fazer_cadastro
+from user import entrar_na_conta, fazer_cadastro, exibir_informacoes_usuario
 from types_db import ICliente
 from sim_database import clientes
 from basic_functions import forcar_opcao, printar_dic_em_lista
 
 
 def main():
-    user = clientes[0]
+    user = clientes[1]
     print(user["nome"])
     while user is None:
         escolhaLogin = int(
@@ -43,11 +43,7 @@ def main():
             vistoria(user)
         
         elif escolhaMenu == 2:
-            # Dados do usuário
-            print(f"{user['nome']} - {user['email']}")
-            print(f"Telefone: {user['telefone']}")
-            print(f"CPF: {user['cpf']}")
-            print(f"CEP: {user['cep']}\n")
+            exibir_informacoes_usuario(user)
        
         elif escolhaMenu == 3:
             print("\nEssas são suas bikes cadastradas:\n")
