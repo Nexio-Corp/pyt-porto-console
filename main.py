@@ -2,11 +2,12 @@ from bike import vistoria
 from user import entrarNaConta, fazerCadastro
 from types_db import ICliente
 from sim_database import clientes
-from basic_functions import forcar_opcao
+from basic_functions import forcar_opcao, printar_dic_em_lista
 
 
 def main():
-    user = None
+    user = clientes[0]
+    print(user["nome"])
     while user is None:
         escolhaLogin = int(
             forcar_opcao(
@@ -37,23 +38,24 @@ def main():
                 ["1", "2", "3", "4", "9"],
             )
         )
+       
         if escolhaMenu == 1:
             bike = vistoria(user)
             if bike is not None:
                 user["bikes"].append(bike)
+        
         elif escolhaMenu == 2:
             # Dados do usuário
             print(f"{user['nome']} - {user['email']}")
             print(f"Telefone: {user['telefone']}")
             print(f"CPF: {user['cpf']}")
             print(f"CEP: {user['cep']}\n")
+       
         elif escolhaMenu == 3:
-            print("Bikes:")
-            for bike in user["bikes"]:
-                print(f"Modelo: {bike['modelo']}")
-                print(f"Valor: {bike['valor']}")
-                print(f"Modificações: {bike['modificacoes']}")
-                print(f"Chassi: {bike['chassi']}\n")
+            print("\nEssas são suas bikes cadastradas:\n")
+            printar_dic_em_lista(user["bikes"])
+            print("\n")
+       
         elif escolhaMenu == 4 and isAdm:
             for cliente in clientes:
                 print(f"Nome: {cliente['nome']}")
@@ -70,6 +72,7 @@ def main():
                     print(
                         f"\tVistoria: {'Aprovada' if bike['fotos'] == '111111' else 'Reprovada'}\n"
                     )
+        
         else:
             print("Sessão encerrada")
             return

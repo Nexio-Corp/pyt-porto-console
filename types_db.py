@@ -5,7 +5,7 @@ class IBike(TypedDict):
     modelo: str
     valor: float
     modificacoes: list[str]
-    chassi: int
+    chassi: str
     fotos: str
 
 

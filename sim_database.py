@@ -10,18 +10,18 @@ clientes: list[ICliente] = [  # Mock de clientes
         'cep': '123456789',
         'bikes': [
             {
-                'modelo': 'modelo1',
-                'valor': 100,
-                'modificacoes': [],
-                'chassi': 1234,
+                'modelo': 'Caloi X98',
+                'valor': 1399.80,
+                'modificacoes': ["GPS", "Lanterna dianteira"],
+                'chassi': '0000001',
                 'fotos': '111111'
             },
             {
-                'modelo': 'modelo2',
-                'valor': 100,
+                'modelo': 'TREK 9800RP',
+                'valor': 2000.90,
                 'modificacoes': [],
-                'chassi': 1234,
-                'fotos': '111111'
+                'chassi': '0000002',
+                'fotos': ''
             }
         ]
     },
