@@ -26,9 +26,12 @@ def selecionar_bike(user: ICliente):
             printar_dic_em_lista(user["bikes"])
             lista = gerar_lista_baseada_em_len_dic(user["bikes"])
             lista.append("nova")
-            escolha = forcar_opcao('\nDigite o número da bike para a qual deseja fazer vistoria ou "nova" para fazer a vistoria de uma nova bike. \n', lista)
+            lista.append("cancelar")
+            escolha = forcar_opcao('\nDigite o número da bike para a qual deseja fazer vistoria ou "nova" para fazer a vistoria de uma nova bike. Para voltar ao menu, digite "cancelar". \n', lista)
             if escolha == "nova":
                 cadastrar_bike(user)
+            elif escolha == "cancelar":
+                bike_selecionada = ""
             else:
                 bike_selecionada = escolha
     return escolha
@@ -37,12 +40,16 @@ def vistoria(user: ICliente):
     escolha = None
     bike_escolhida = None
     while escolha == None:
-        escolha = int(selecionar_bike(user))
-        bike_escolhida = user["bikes"][escolha - 1]
-                    
-        if bike_escolhida["fotos"] == "111111":
-            print("\nA vistoria para essa bike já foi realizada com sucesso. Por favor, escolha uma bike que ainda não tenha sido vistoriada.")
-            escolha = None
+        escolha = selecionar_bike(user)
+        if escolha == "cancelar":
+            return
+        else:
+            escolha = int(escolha)    
+            bike_escolhida = user["bikes"][escolha - 1]
+                        
+            if bike_escolhida["fotos"] == "111111":
+                print("\nA vistoria para essa bike já foi realizada com sucesso. Por favor, escolha uma bike que ainda não tenha sido vistoriada.")
+                escolha = None
 
     print("Informações da Bike selecionada:")
     printar_objeto_do_dic(bike_escolhida)

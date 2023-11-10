@@ -40,9 +40,7 @@ def main():
         )
        
         if escolhaMenu == 1:
-            bike = vistoria(user)
-            if bike is not None:
-                user["bikes"].append(bike)
+            vistoria(user)
         
         elif escolhaMenu == 2:
             # Dados do usuário
