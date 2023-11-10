@@ -1,5 +1,5 @@
 from bike import vistoria
-from user import entrarNaConta, fazerCadastro
+from user import entrar_na_conta, fazer_cadastro
 from types_db import ICliente
 from sim_database import clientes
 from basic_functions import forcar_opcao, printar_dic_em_lista
@@ -16,9 +16,9 @@ def main():
             )
         )
         if escolhaLogin == 1:
-            user = entrarNaConta(clientes)
+            user = entrar_na_conta(clientes)
         elif escolhaLogin == 2:
-            user = fazerCadastro(clientes)
+            user = fazer_cadastro(clientes)
         else:
             print("Obrigado. Volte logo.")
             return

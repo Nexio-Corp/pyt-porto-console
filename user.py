@@ -1,7 +1,7 @@
 from types_db import ICliente
 
 
-def fazerCadastro(clientes: list[ICliente]):
+def fazer_cadastro(clientes: list[ICliente]):
     print("Para fazer o cadastro digite:")
     nome = input("Nome: ")
     email = input("E-mail: ")
@@ -22,7 +22,7 @@ def fazerCadastro(clientes: list[ICliente]):
     clientes.append(usuario)
 
 
-def entrarNaConta(clientes: list[ICliente]):
+def entrar_na_conta(clientes: list[ICliente]):
     user = None
     while user is None:
         email = input("Digite o seu e-mail: ")
