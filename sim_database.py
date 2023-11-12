@@ -1,6 +1,6 @@
-from types_db import ICliente;
+from types_db import IUsuario;
 
-clientes: list[ICliente] = [  # Mock de clientes
+usuarios: list[IUsuario] = [  # Mock de clientes
     {
         'nome': 'cliente1',
         'email': 'cliente1@gmail.com',
@@ -14,14 +14,16 @@ clientes: list[ICliente] = [  # Mock de clientes
                 'valor': 1399.80,
                 'modificacoes': ["GPS", "Lanterna dianteira"],
                 'chassi': '0000001',
-                'fotos': '111111'
+                'fotos': '111111',
+                'relatorio': None
             },
             {
                 'modelo': 'TREK 9800RP',
                 'valor': 2000.90,
                 'modificacoes': [],
                 'chassi': '0000002',
-                'fotos': ''
+                'fotos': '',
+                'relatorio': None
             }
         ]
     },

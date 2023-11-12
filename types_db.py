@@ -1,4 +1,4 @@
-from typing import TypedDict
+from typing import Optional, TypedDict
 
 
 class IBike(TypedDict):
@@ -7,9 +7,10 @@ class IBike(TypedDict):
     modificacoes: list[str]
     chassi: str
     fotos: str
+    relatorio: Optional[str]
 
 
-class ICliente(TypedDict):
+class IUsuario(TypedDict):
     nome: str
     email: str
     senha: str

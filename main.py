@@ -1,12 +1,13 @@
-from bike import vistoria
+from bike import vistoria, printar_lista_bikes
 from user import entrar_na_conta, fazer_cadastro, exibir_informacoes_usuario
-from types_db import ICliente
-from sim_database import clientes
-from basic_functions import forcar_opcao, printar_dic_em_lista
+from types_db import IUsuario
+from sim_database import usuarios
+from basic_functions import forcar_opcao
+from report import visualizar_relatorio_vistoria
 
 
 def main():
-    user = clientes[1]
+    user = usuarios[2] ## NÃO ESQUECER DE MUDAR PRA "NONE" QUANDO ACABAR!
     print(user["nome"])
     while user is None:
         escolhaLogin = int(
@@ -16,9 +17,9 @@ def main():
             )
         )
         if escolhaLogin == 1:
-            user = entrar_na_conta(clientes)
+            user = entrar_na_conta(usuarios)
         elif escolhaLogin == 2:
-            user = fazer_cadastro(clientes)
+            user = fazer_cadastro(usuarios)
         else:
             print("Obrigado. Volte logo.")
             return
@@ -32,7 +33,6 @@ def main():
                 "\n3 - Visualizar Bikes"
                 + ("\n4 - Visualizar relatório de vistoria" if isAdm else "")
                 +
-                # TODO Adicionar relatório de vistoria
                 "\n9 - Sair"
                 "\nQual delas deseja utilizar? ",
                 ["1", "2", "3", "4", "9"],
@@ -47,31 +47,13 @@ def main():
        
         elif escolhaMenu == 3:
             print("\nEssas são suas bikes cadastradas:\n")
-            printar_dic_em_lista(user["bikes"])
+            printar_lista_bikes(user)
             print("\n")
        
         elif escolhaMenu == 4 and isAdm:
-            for cliente in clientes:
-                print(f"Nome: {cliente['nome']}")
-                print(f"E-mail: {cliente['email']}")
-                print(f"Telefone: {cliente['telefone']}")
-                print(f"CPF: {cliente['cpf']}")
-                print(f"CEP: {cliente['cep']}")
-                print("Bikes:")
-                for bike in cliente["bikes"]:
-                    print(f"\tModelo: {bike['modelo']}")
-                    print(f"\tValor: {bike['valor']}")
-                    print(f"\tModificações: {bike['modificacoes']}")
-                    print(f"\tChassi: {bike['chassi']}")
-                    print(
-                        f"\tVistoria: {'Aprovada' if bike['fotos'] == '111111' else 'Reprovada'}\n"
-                    )
-        
+            visualizar_relatorio_vistoria()        
         else:
             print("Sessão encerrada")
             return
-
-
-# if __name__ == "__main__":
 
 main()

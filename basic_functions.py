@@ -11,6 +11,7 @@ def printar_dic_em_lista(dic):
             string += f"{value} - "
         string = string[:-3]
         print(string)
+        
 
 def gerar_lista_baseada_em_len_dic(dic):
     lista = []

@@ -1,20 +1,61 @@
 from typing import TypedDict
-from types_db import IBike, ICliente
-from basic_functions import forcar_opcao, printar_dic_em_lista, gerar_lista_baseada_em_len_dic, printar_objeto_do_dic
+from types_db import IBike, IUsuario
+from basic_functions import forcar_opcao, gerar_lista_baseada_em_len_dic, printar_objeto_do_dic
 
-def cadastrar_bike(user: ICliente):
+
+def montar_relatorio(bike):    
+    relatorio = ""
+    relatorio += "Relatório de Vistoria da Bike:\n---Informações completas da bicicleta---\n"
+    for chave in bike:
+        if chave != "relatorio":
+            if chave == "modificacoes":
+                modificacoes = ", ".join(bike["modificacoes"])
+                if modificacoes == "":
+                    modificacoes = "sem modificações"
+                relatorio += f"{chave}: {modificacoes}\n"
+            else:        
+                relatorio += f"{chave}: {bike[chave]}\n"
+    relatorio += "---Comentários acerca da vistoria---\nA vistoria da bicicleta foi realizada com sucesso! Todas as informações fornecidas foram cuidadosamente verificadas, e as fotos enviadas confirmam a autenticidade e o excelente estado da bicicleta. Este relatório serve como confirmação da conclusão bem-sucedida da vistoria. O veículo pode ser segurado pela Porto sem problemas."
+    
+    return relatorio
+
+
+def printar_lista_bikes(user: IUsuario):
+    for i, bike in enumerate(user["bikes"], start=1):
+        modificacoes = ", ".join(bike["modificacoes"])
+        if modificacoes == "":
+            modificacoes = "sem modificações"
+        string = f"{i}) {bike['modelo']} - R$ {bike['valor']} - {modificacoes} - {bike['chassi']}"
+        print(string)
+
+
+def cadastrar_bike(user: IUsuario):
     print("Para darmos início na vistoria, precisaremos de alguns dados da sua bike:")
-    bike : IBike = {
-            'modelo': input("Digite o modelo da sua bike: "),
-            'valor': float(input("Digite o valor da sua bike: ")),
-            'modificacoes': [mod.strip() for mod in input("Digite as modificações feitas na bike - separe-as por virgula: ").split(",")],
-            'chassi': input("Digite o número do chassi: "),
-            'fotos': ""
-        }
-    user["bikes"].append(bike)
-    print(user["bikes"])
 
-def selecionar_bike(user: ICliente):
+    while True:
+        try:
+            modelo = input("Digite o modelo da sua bike: ")
+            valor = float(input("Digite o valor da sua bike: "))
+            modificacoes = [mod.strip() for mod in input("Digite as modificações feitas na bike - separe-as por vírgula: ").split(",")]
+            chassi = input("Digite o número do chassi: ")
+
+            # Se chegou aqui, todos os dados foram inseridos corretamente
+            bike: IBike = {
+                'modelo': modelo,
+                'valor': valor,
+                'modificacoes': modificacoes,
+                'chassi': chassi,
+                'fotos': "",
+                'relatorio': None
+            }
+            
+            user["bikes"].append(bike)
+            break  # Sai do loop se todas as entradas forem válidas
+        except ValueError:
+            print("Erro: Certifique-se de digitar um valor válido para o preço.")
+            
+
+def selecionar_bike(user: IUsuario):
     bike_selecionada = None
     escolha = ""
     while bike_selecionada is None:
@@ -23,7 +64,7 @@ def selecionar_bike(user: ICliente):
             cadastrar_bike(user)
         else:
             print("\nEssas são suas bikes cadastradas:")
-            printar_dic_em_lista(user["bikes"])
+            printar_lista_bikes(user)
             lista = gerar_lista_baseada_em_len_dic(user["bikes"])
             lista.append("nova")
             lista.append("cancelar")
@@ -36,7 +77,8 @@ def selecionar_bike(user: ICliente):
                 bike_selecionada = escolha
     return escolha
 
-def vistoria(user: ICliente):
+
+def vistoria(user: IUsuario):
     escolha = None
     bike_escolhida = None
     while escolha == None:
@@ -75,8 +117,8 @@ def vistoria(user: ICliente):
     if fotos == "111111":  # 111111 é o valor que representa que todas as fotos são autênticas
         if bike_escolhida is not None:
             bike_escolhida["fotos"] = fotos
+            bike_escolhida["relatorio"] = montar_relatorio(bike_escolhida)
         print("Vistoria executada com sucesso! A apólice foi enviada para o seu email.")
-        printar_objeto_do_dic(bike_escolhida)
     elif "2" in fotos:  # 2 é o valor que representa que uma das fotos é falsa
         print("Identificamos fotos falsas, por favor tente novamente enviando apenas fotos reais.")
     elif "3" in fotos:  # 3 é o valor que representa que uma das fotos é de uma bike de outro modelo
