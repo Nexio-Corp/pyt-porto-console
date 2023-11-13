@@ -10,21 +10,27 @@ def selecionar_bike(user):
     bike_selecionada = None
     escolha = ""
     while bike_selecionada is None:
+        # Obtém as bikes do usuário a partir do banco de dados
         bikes_usuario = obter_bikes_do_usuario(user[0])
+
+        # Se o usuário não tiver bikes cadastradas, oferece a opção de cadastrar uma nova
         if len(bikes_usuario) == 0:
             print("\nVocê ainda não possui bikes cadastradas.")
             cadastrar_bike(user)
+
         else:
+            # Exibe as bikes cadastradas do usuário
             print("\nEssas são suas bikes cadastradas:")
             printar_lista_bikes(user)
+            # Cria uma lista de índices das bikes para a opção do usuário
             lista = []
             for bike in obter_bikes_do_usuario(user[0]):
                 lista.append(str(bike[0]))
             lista.append("nova")
             lista.append("cancelar")
+
             escolha = forcar_opcao(
                 '\nDigite o índice da bike para a qual deseja fazer vistoria ou "nova" para fazer a vistoria de uma nova bike. Para voltar ao menu, digite "cancelar". \n', lista)
-
             if escolha == "nova":
                 cadastrar_bike(user)
             elif escolha == "cancelar":
@@ -34,9 +40,9 @@ def selecionar_bike(user):
     return escolha
 
 
+# Essa função permite imprimir uma lista compacta das bikes de um usuário
 def printar_lista_bikes(user):
     for bike in obter_bikes_do_usuario(user[0]):
-        # Aqui você pode ajustar de acordo com a estrutura real do seu banco de dados
         indice = bike[0]
         modelo = bike[2]
         valor = bike[3]
@@ -60,6 +66,8 @@ def vistoria(user):
     escolha = None
     colunas = None
     bike_escolhida = None
+
+    # Loop para garantir uma escolha válida
     while escolha == None:
         escolha = selecionar_bike(user)
         if escolha == "cancelar":
@@ -68,6 +76,7 @@ def vistoria(user):
             escolha = int(escolha)
             bike_escolhida, colunas = obter_bike_e_colunas_por_indice(escolha)
 
+            # Verifica se a vistoria para essa bike já foi realizada
             if bike_escolhida[6] == "111111":
                 print("\nA vistoria para essa bike já foi realizada com sucesso. Por favor, escolha uma bike que ainda não tenha sido vistoriada.")
                 escolha = None
@@ -95,17 +104,18 @@ def vistoria(user):
             return
         fotos += escolhaFoto
 
+    # Processa as fotos conforme as escolhas do usuário. Aqui é onde entraria a API de reconhecimento de imagem que fizemos em AI & Chatbot, mas optamos por integrá-la diretamente com o site, então esta é apenas uma simulação.
     if fotos == "111111":  # 111111 é o valor que representa que todas as fotos são autênticas
         if bike_escolhida is not None:
             inserir_fotos_vistoria_bd(bike_escolhida, fotos)
             inserir_relatorio_vistoria_bd(
                 bike_escolhida, montar_relatorio(bike_escolhida, colunas))
         print("Vistoria executada com sucesso! A apólice foi enviada para o seu email.")
-    elif "2" in fotos:  # 2 é o valor que representa que uma das fotos é falsa
+    elif "2" in fotos:  # 2 é o valor que representa que ao menos uma das fotos é falsa
         print("Identificamos fotos falsas, por favor tente novamente enviando apenas fotos reais.")
-    elif "3" in fotos:  # 3 é o valor que representa que uma das fotos é de uma bike de outro modelo
+    elif "3" in fotos:  # 3 é o valor que representa que ao menos uma das fotos é de uma bike de outro modelo
         print("Identificamos fotos de uma bike de outro modelo, por favor tente novamente enviando fotos de sua bike que corresponde com o modelo informado.")
-    elif "4" in fotos:  # 4 é o valor que representa que uma das fotos é de uma bike com dano
+    elif "4" in fotos:  # 4 é o valor que representa que ao menos uma das fotos é de uma bike com dano
         print("Pelas fotos identificamos que sua bike está danificada. Infelizmente o Seguro Bike da Porto não cobre bikes com esses tipos de danos.")
     else:
         print("Opção inválida.")

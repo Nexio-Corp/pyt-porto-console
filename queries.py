@@ -3,16 +3,16 @@ import oracledb
 # QUERIES PARA OPERAÇÕES RELATIVAS AOS USUÁRIOS
 
 
-def obter_ultimo_usuario():
+def obter_ultimo_usuario():  # Essa função é usada apenas para obter as informações acerca do usuário que acaba de se cadastrar e possibilitar interação do programa com ele pelo nome
     con = oracledb.connect(user="rm97784", password="081100",
                            dsn="oracle.fiap.com.br:1521/orcl")
     cur = con.cursor()
 
-    # Recuperar o último ID cadastrado
+    # Recuperar o último ID cadastrado (id é auto incrementado no Banco de Dados)
     cur.execute("SELECT MAX(id) FROM usuario")
-    ultimo_id = cur.fetchone()[0]  # Obtém o valor do último ID
+    ultimo_id = cur.fetchone()[0]
 
-    # Recuperar os dados do último usuário
+    # Recuperar os dados do último usuário cadastrado
     cur.execute("SELECT * FROM usuario WHERE id = :ultimo_id",
                 ultimo_id=ultimo_id)
     ultimo_usuario = cur.fetchone()
@@ -31,7 +31,8 @@ def cadastrar_usuario_no_bd(nome, email, senha, telefone, cpf, cep):
     # Usando parâmetros vinculados
     cur.execute("INSERT INTO usuario (nome, email, senha, telefone, cpf, cep) VALUES (:nome, :email, :senha, :telefone, :cpf, :cep)",
                 nome=nome, email=email, senha=senha, telefone=telefone, cpf=cpf, cep=cep)
-    con.commit()
+
+    con.commit()  # Commit para efetivar a inserção
 
     cur.close()
     con.close()
@@ -61,7 +62,9 @@ def verificar_credenciais_no_bd(email, senha):
         return user
 
 
+# Essa função é utilizada para obter informações do usuário que está logado na sessão.
 def obter_usuario_no_bd(user):
+
     con = oracledb.connect(user="rm97784", password="081100",
                            dsn="oracle.fiap.com.br:1521/orcl")
     cur = con.cursor()
@@ -76,7 +79,9 @@ def obter_usuario_no_bd(user):
     return usuario
 
 
+# Essa função é utilizada apenas no momento em que um Admin deseja encontrar um usuário pelo nome para acessar seus relatórios de vistoria.
 def obter_usuario_por_nome(nome):
+
     con = oracledb.connect(user="rm97784", password="081100",
                            dsn="oracle.fiap.com.br:1521/orcl")
     cur = con.cursor()
@@ -153,9 +158,11 @@ def obter_bikes_do_usuario(user_id):
         cur.close()
         con.close()
 
+    # Retorna uma lista contendo todas as bikes do usuário referido pelo Id.
     return bikes_do_usuario
 
 
+# Essa função acessa e retorna uma bike especificamente e também suas colunas, permitindo que essas colunas sejam percorridas para, por exemplo, imprimir as informações da bike.
 def obter_bike_e_colunas_por_indice(bike_id):
     con = oracledb.connect(user="rm97784", password="081100",
                            dsn="oracle.fiap.com.br:1521/orcl")

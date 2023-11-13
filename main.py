@@ -6,6 +6,8 @@ from report import visualizar_relatorio_vistoria
 
 def main():
     user = None
+
+    # Exibição do menu inicial
     while user is None:
         escolhaLogin = int(
             forcar_opcao(
@@ -20,7 +22,10 @@ def main():
         else:
             print("Obrigado. Volte logo.")
             return
+
+    # Exibição do menu de funcionalidades
     while True:
+        # Checagem se o usuário logado é administrador
         isAdm = "@porto" in user[2]
         escolhaMenu = int(
             forcar_opcao(
@@ -28,6 +33,7 @@ def main():
                 "\n1 - Fazer vistoria"
                 "\n2 - Visualizar Dados de Usuário"
                 "\n3 - Visualizar Bikes"
+                # Exibição condicional da funcionalidade de visualizar relatórios de vistoria
                 + ("\n4 - Visualizar relatório de vistoria" if isAdm else "")
                 +
                 "\n9 - Sair"
@@ -38,7 +44,6 @@ def main():
 
         if escolhaMenu == 1:
             vistoria(user)
-            
 
         elif escolhaMenu == 2:
             exibir_informacoes_usuario(user)
@@ -50,6 +55,7 @@ def main():
 
         elif escolhaMenu == 4 and isAdm:
             visualizar_relatorio_vistoria()
+
         else:
             print("Sessão encerrada")
             return
