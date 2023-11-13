@@ -1,7 +1,7 @@
-from types_db import IUsuario
+from queries import cadastrar_usuario_no_bd, obter_ultimo_usuario, verificar_credenciais_no_bd, obter_usuario_no_bd
 
 
-def fazer_cadastro(clientes: list[IUsuario]):
+def fazer_cadastro():
     print("Para fazer o cadastro digite:")
     nome = input("Nome: ")
     email = input("E-mail: ")
@@ -9,39 +9,33 @@ def fazer_cadastro(clientes: list[IUsuario]):
     telefone = input("Telefone para contato: ")
     cpf = input("CPF: ")
     cep = input("Cep: ")
-    usuario: IUsuario = {
-        'nome': nome,
-        'email': email,
-        'senha': senha,
-        'telefone': telefone,
-        'cpf': cpf,
-        'cep': cep,
-        'bikes': []
-    }
-    print(f"{usuario['nome']}, seu cadastro foi concluído com sucesso!\nVocê será redirecionado para a página inicial.\n.\n.\n.")
-    clientes.append(usuario)
+
+    cadastrar_usuario_no_bd(nome, email, senha, telefone, cpf, cep)
+    usuario_cadastrado = obter_ultimo_usuario()
+
+    print(
+        f"{usuario_cadastrado[1]}, seu cadastro foi concluído com sucesso!\nVocê será redirecionado para a página inicial.\n.\n.\n.")
 
 
-def entrar_na_conta(clientes: list[IUsuario]):
-    user = None
-    while user is None:
+def entrar_na_conta():
+    usuario_logado = None
+    while usuario_logado is None:
         email = input("Digite o seu e-mail: ")
-        password = input("Digite a sua senha: ")
-        for cliente in clientes:
-            if cliente['email'] == email and cliente['senha'] == password:
-                user = cliente
-                break
-        if user is not None:
-            print(f"Olá {user['nome']}, você entrou na sua conta.")
+        senha = input("Digite a sua senha: ")
+        usuario_logado = verificar_credenciais_no_bd(email, senha)
+
+        if usuario_logado:
+            return usuario_logado
         else:
-            print("E-mail ou senha incorretos. Tente novamente.")
-    return user
+            usuario_logado = None
 
 
-def exibir_informacoes_usuario(user: IUsuario):
-    # Dados do usuário
-    print(f"\n{user['nome']}")
-    print(f"Email: {user['email']}")
-    print(f"Telefone: {user['telefone']}")
-    print(f"CPF: {user['cpf']}")
-    print(f"CEP: {user['cep']}\n")
+def exibir_informacoes_usuario(user):
+    usuario = obter_usuario_no_bd(user)
+    if usuario is not None:
+        # Dados do usuário
+        print(f"\n{usuario[1]}")
+        print(f"Email: {usuario[2]}")
+        print(f"Telefone: {usuario[4]}")
+        print(f"CPF: {usuario[5]}")
+        print(f"CEP: {usuario[6]}\n")

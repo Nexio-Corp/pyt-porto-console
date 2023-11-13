@@ -1,74 +1,30 @@
-from typing import TypedDict
-from types_db import IBike, IUsuario
-from basic_functions import forcar_opcao, gerar_lista_baseada_em_len_dic, printar_objeto_do_dic
+from basic_functions import forcar_opcao
+from queries import cadastrar_bike_no_bd, obter_bikes_do_usuario, listar_informacoes_completas_bike, obter_bike_e_colunas_por_indice, inserir_fotos_vistoria_bd, inserir_relatorio_vistoria_bd
 
 
-def montar_relatorio(bike):    
-    relatorio = ""
-    relatorio += "Relatório de Vistoria da Bike:\n---Informações completas da bicicleta---\n"
-    for chave in bike:
-        if chave != "relatorio":
-            if chave == "modificacoes":
-                modificacoes = ", ".join(bike["modificacoes"])
-                if modificacoes == "":
-                    modificacoes = "sem modificações"
-                relatorio += f"{chave}: {modificacoes}\n"
-            else:        
-                relatorio += f"{chave}: {bike[chave]}\n"
-    relatorio += "---Comentários acerca da vistoria---\nA vistoria da bicicleta foi realizada com sucesso! Todas as informações fornecidas foram cuidadosamente verificadas, e as fotos enviadas confirmam a autenticidade e o excelente estado da bicicleta. Este relatório serve como confirmação da conclusão bem-sucedida da vistoria. O veículo pode ser segurado pela Porto sem problemas."
-    
-    return relatorio
+def cadastrar_bike(user):
+    cadastrar_bike_no_bd(user[0])
 
 
-def printar_lista_bikes(user: IUsuario):
-    for i, bike in enumerate(user["bikes"], start=1):
-        modificacoes = ", ".join(bike["modificacoes"])
-        if modificacoes == "":
-            modificacoes = "sem modificações"
-        string = f"{i}) {bike['modelo']} - R$ {bike['valor']} - {modificacoes} - {bike['chassi']}"
-        print(string)
-
-
-def cadastrar_bike(user: IUsuario):
-    print("Para darmos início na vistoria, precisaremos de alguns dados da sua bike:")
-
-    while True:
-        try:
-            modelo = input("Digite o modelo da sua bike: ")
-            valor = float(input("Digite o valor da sua bike: "))
-            modificacoes = [mod.strip() for mod in input("Digite as modificações feitas na bike - separe-as por vírgula: ").split(",")]
-            chassi = input("Digite o número do chassi: ")
-
-            # Se chegou aqui, todos os dados foram inseridos corretamente
-            bike: IBike = {
-                'modelo': modelo,
-                'valor': valor,
-                'modificacoes': modificacoes,
-                'chassi': chassi,
-                'fotos': "",
-                'relatorio': None
-            }
-            
-            user["bikes"].append(bike)
-            break  # Sai do loop se todas as entradas forem válidas
-        except ValueError:
-            print("Erro: Certifique-se de digitar um valor válido para o preço.")
-            
-
-def selecionar_bike(user: IUsuario):
+def selecionar_bike(user):
     bike_selecionada = None
     escolha = ""
     while bike_selecionada is None:
-        if (len(user["bikes"]) == 0):
+        bikes_usuario = obter_bikes_do_usuario(user[0])
+        if len(bikes_usuario) == 0:
             print("\nVocê ainda não possui bikes cadastradas.")
             cadastrar_bike(user)
         else:
             print("\nEssas são suas bikes cadastradas:")
             printar_lista_bikes(user)
-            lista = gerar_lista_baseada_em_len_dic(user["bikes"])
+            lista = []
+            for bike in obter_bikes_do_usuario(user[0]):
+                lista.append(str(bike[0]))
             lista.append("nova")
             lista.append("cancelar")
-            escolha = forcar_opcao('\nDigite o número da bike para a qual deseja fazer vistoria ou "nova" para fazer a vistoria de uma nova bike. Para voltar ao menu, digite "cancelar". \n', lista)
+            escolha = forcar_opcao(
+                '\nDigite o índice da bike para a qual deseja fazer vistoria ou "nova" para fazer a vistoria de uma nova bike. Para voltar ao menu, digite "cancelar". \n', lista)
+
             if escolha == "nova":
                 cadastrar_bike(user)
             elif escolha == "cancelar":
@@ -78,23 +34,47 @@ def selecionar_bike(user: IUsuario):
     return escolha
 
 
-def vistoria(user: IUsuario):
+def printar_lista_bikes(user):
+    for bike in obter_bikes_do_usuario(user[0]):
+        # Aqui você pode ajustar de acordo com a estrutura real do seu banco de dados
+        indice = bike[0]
+        modelo = bike[2]
+        valor = bike[3]
+        modificacoes = bike[4]
+        chassi = bike[5]
+
+        string = f"{indice}) {modelo} - R$ {valor} - {modificacoes} - {chassi}"
+        print(string)
+
+
+def montar_relatorio(bike, colunas):
+    relatorio = ""
+    relatorio += "\nRelatório de Vistoria da Bike:\n---Informações completas da bicicleta---\n"
+    relatorio += listar_informacoes_completas_bike(bike, colunas)
+    relatorio += "---Comentários acerca da vistoria---\nA vistoria da bicicleta foi realizada com sucesso! Todas as informações fornecidas foram cuidadosamente verificadas, e as fotos enviadas confirmam a autenticidade e o excelente estado da bicicleta. Este relatório serve como confirmação da conclusão bem-sucedida da vistoria. O veículo pode ser segurado pela Porto sem problemas.\n"
+
+    return relatorio
+
+
+def vistoria(user):
     escolha = None
+    colunas = None
     bike_escolhida = None
     while escolha == None:
         escolha = selecionar_bike(user)
         if escolha == "cancelar":
             return
         else:
-            escolha = int(escolha)    
-            bike_escolhida = user["bikes"][escolha - 1]
-                        
-            if bike_escolhida["fotos"] == "111111":
+            escolha = int(escolha)
+            bike_escolhida, colunas = obter_bike_e_colunas_por_indice(escolha)
+
+            if bike_escolhida[6] == "111111":
                 print("\nA vistoria para essa bike já foi realizada com sucesso. Por favor, escolha uma bike que ainda não tenha sido vistoriada.")
                 escolha = None
 
     print("Informações da Bike selecionada:")
-    printar_objeto_do_dic(bike_escolhida)
+    informacoes = listar_informacoes_completas_bike(bike_escolhida, colunas)
+    print(informacoes)
     print("\nPara o próximo passo, é necessário estar com a bike ao seu lado.")
     print("\nAgora precisaremos de 6 fotos da sua bike:")
 
@@ -107,17 +87,19 @@ def vistoria(user: IUsuario):
             "\n3 - Foto de uma bike de outro modelo"
             "\n4 - Foto de uma bike com dano"
             "\n5 - Desistir do envio de fotos"
-            f"\n({6 - len(fotos)}) fotos restantes.\n", ["1","2","3","4","5"]
+            f"\n({6 - len(fotos)
+                  }) fotos restantes.\n", ["1", "2", "3", "4", "5"]
         )
         if escolhaFoto == "5":
             print("Vistoria cancelada.")
             return
         fotos += escolhaFoto
-    
+
     if fotos == "111111":  # 111111 é o valor que representa que todas as fotos são autênticas
         if bike_escolhida is not None:
-            bike_escolhida["fotos"] = fotos
-            bike_escolhida["relatorio"] = montar_relatorio(bike_escolhida)
+            inserir_fotos_vistoria_bd(bike_escolhida, fotos)
+            inserir_relatorio_vistoria_bd(
+                bike_escolhida, montar_relatorio(bike_escolhida, colunas))
         print("Vistoria executada com sucesso! A apólice foi enviada para o seu email.")
     elif "2" in fotos:  # 2 é o valor que representa que uma das fotos é falsa
         print("Identificamos fotos falsas, por favor tente novamente enviando apenas fotos reais.")
