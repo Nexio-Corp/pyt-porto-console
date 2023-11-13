@@ -2,7 +2,6 @@ from bike import vistoria, printar_lista_bikes
 from user import entrar_na_conta, fazer_cadastro, exibir_informacoes_usuario
 from basic_functions import forcar_opcao
 from report import visualizar_relatorio_vistoria
-from queries import obter_bikes_do_usuario
 
 
 def main():

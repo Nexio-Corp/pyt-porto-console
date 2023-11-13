@@ -1,7 +1,5 @@
-from types_db import IUsuario
-from sim_database import usuarios
-from basic_functions import forcar_opcao, gerar_lista_baseada_em_len
-from bike import cadastrar_bike, printar_lista_bikes
+from basic_functions import forcar_opcao
+from bike import printar_lista_bikes
 from queries import obter_bikes_do_usuario, obter_usuario_por_nome, obter_bike_e_colunas_por_indice
 
 
