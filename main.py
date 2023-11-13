@@ -1,14 +1,12 @@
 from bike import vistoria, printar_lista_bikes
 from user import entrar_na_conta, fazer_cadastro, exibir_informacoes_usuario
-from types_db import IUsuario
-from sim_database import usuarios
 from basic_functions import forcar_opcao
 from report import visualizar_relatorio_vistoria
+from queries import obter_bikes_do_usuario
 
 
 def main():
-    user = usuarios[2] ## NÃO ESQUECER DE MUDAR PRA "NONE" QUANDO ACABAR!
-    print(user["nome"])
+    user = None
     while user is None:
         escolhaLogin = int(
             forcar_opcao(
@@ -17,14 +15,14 @@ def main():
             )
         )
         if escolhaLogin == 1:
-            user = entrar_na_conta(usuarios)
+            user = entrar_na_conta()
         elif escolhaLogin == 2:
-            user = fazer_cadastro(usuarios)
+            user = fazer_cadastro()
         else:
             print("Obrigado. Volte logo.")
             return
     while True:
-        isAdm = "@porto" in user["email"]
+        isAdm = "@porto" in user[2]
         escolhaMenu = int(
             forcar_opcao(
                 "Este é nosso menu de funcionalidades:"
@@ -38,22 +36,24 @@ def main():
                 ["1", "2", "3", "4", "9"],
             )
         )
-       
+
         if escolhaMenu == 1:
             vistoria(user)
-        
+            
+
         elif escolhaMenu == 2:
             exibir_informacoes_usuario(user)
-       
+
         elif escolhaMenu == 3:
             print("\nEssas são suas bikes cadastradas:\n")
             printar_lista_bikes(user)
             print("\n")
-       
+
         elif escolhaMenu == 4 and isAdm:
-            visualizar_relatorio_vistoria()        
+            visualizar_relatorio_vistoria()
         else:
             print("Sessão encerrada")
             return
+
 
 main()
